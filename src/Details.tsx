@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import pet from '@frontendmasters/pet'
-import { navigate } from '@reach/router'
+import { navigate, RouteComponentProps } from '@reach/router'
 import Modal from './Modal'
 import Carousel from './Carousel'
 import ErrorBoundary from './ErrorBoundary'
 import ThemeContext from './ThemeContext'
 
-class Details extends Component {
-  state = {
+class Details extends Component<RouteComponentProps<{ id: string }>> {
+  public state = {
     loading: true,
     showModal: false
   }
-  componentDidMount() {
+  public componentDidMount() {
+    if (!this.props.id) {
+      navigate('/')
+      return
+    }
     pet
       .animal(this.props.id)
       .then(({ animal }) =>
